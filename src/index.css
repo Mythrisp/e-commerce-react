@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+.search{
+  @apply w-56 border rounded-full pl-4 pr-10 py-2 text-sm 
+                     focus:outline-none focus:ring-1 focus:ring-gray-300;
+}
