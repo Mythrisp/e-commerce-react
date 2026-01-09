@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import App from "./App";
 import SignUp from "./signUp";
 import Login from "./login";
+import About from "./about";
+import Contact from "./contact";
 
-type Screen = "signup" | "login" | "app";
+type Screen = "signup" | "login" | "app" | "about" | "contact";
 
 export interface User {
   id: number;
@@ -16,7 +18,7 @@ const AuthRoot = () => {
   const [screen, setScreen] = useState<Screen>("signup");
   const [users, setUsers] = useState<User[]>([]);
 
- 
+
   useEffect(() => {
     fetch("https://dummyjson.com/users")
       .then((res) => res.json())
@@ -25,10 +27,12 @@ const AuthRoot = () => {
 
   if (screen === "app") {
     return <App
-     
+      onContactClick={() => setScreen("contact")}
+      onHomeClick={() => setScreen("app")}
+      onAboutClick={() => setScreen("about")}
       onSignUpClick={() => setScreen("signup")}
-      currentScreen={screen}
- />;
+
+    />;
   }
 
   if (screen === "login") {
@@ -41,12 +45,37 @@ const AuthRoot = () => {
     );
   }
 
+  if (screen === "about") {
+    return (
+      <About
+        onContactClick={() => setScreen("contact")}
+        onSignUpClick={() => setScreen("signup")}
+        onHomeClick={() => setScreen("app")}
+
+      />
+    );
+  }
+
+  if (screen === "contact") {
+    return (
+      <Contact
+
+        onAboutClick={() => setScreen("about")}
+        onSignUpClick={() => setScreen("signup")}
+        onHomeClick={() => setScreen("app")}
+
+      />
+    );
+  }
+
   return (
     <SignUp
+
       onSignup={() => setScreen("app")}
       onSwitch={() => setScreen("login")}
     />
   );
 };
+
 
 export default AuthRoot;
