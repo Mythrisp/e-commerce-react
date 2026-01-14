@@ -7,9 +7,10 @@ interface HeaderProps {
   onSignUpClick?: () => void;
   onAboutClick?: () => void;
   onHomeClick?: () => void;
-  onContactClick?: () => void
+  onContactClick?: () => void;
+   onWishlistClick?: () => void;
 
-  currentScreen?: "signup" | "login" | "app" | "about" | "contact";
+  currentScreen?: "signup" | "login" | "app" | "about" | "contact"|"wishlist";
 }
 
 
@@ -61,4 +62,4 @@ const Header = ({ children, onSignUpClick, onHomeClick, onContactClick, onAboutC
 
   )
 }
-export default Header
+export default Header;
