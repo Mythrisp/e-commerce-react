@@ -7,7 +7,8 @@ interface ProductProps {
   rating: number;
   thumbnail: string;
   discountPercentage:number;
-   onClick:(id:number)=>void
+   onClick:(id:number)=>void;
+    onAddToWishlist: () => void;
 }
 
 const Product = ({
@@ -17,7 +18,7 @@ const Product = ({
   rating,
   thumbnail,
   discountPercentage,
-  onClick,
+  onClick,onAddToWishlist
 }: ProductProps) => {
 
   const roundedRating = Math.round(rating);
@@ -35,7 +36,8 @@ const Product = ({
    
 
    
-      <FiHeart className="absolute top-6 right-6 cursor-pointer text-gray-500" />
+      <FiHeart onClick={(e)=>{e.stopPropagation();
+        onAddToWishlist()}} className="absolute top-6 right-6 cursor-pointer text-gray-500 hover:text-red-500" />
 
      <div className="bg-gray-100 h-50 flex items-center justify-center rounded">
       <img
