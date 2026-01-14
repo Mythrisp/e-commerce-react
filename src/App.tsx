@@ -6,6 +6,9 @@ import Product from './products'
 import NewArrival from './newArrival'
 import Footer from './footer'
 import ProductDetails from './productDetails'
+import AccountDropdown from './accountDropdown'
+import WishlistIcon from './wishlistCount'
+
 
 
 interface AppProps {
@@ -13,11 +16,18 @@ interface AppProps {
   onAboutClick: () => void
   onHomeClick: () => void;
   onContactClick: () => void;
+  onLoginClick: () => void;
+  onMyAccountClick: () => void;
+  onAddToWishlist: (product: any) => void;
+  onWishlistClick: () => void;
+  wishlistCount: number;
+
+
 
 
 }
 
-function App({ onSignUpClick, onHomeClick, onAboutClick, onContactClick }: AppProps) {
+function App({ onSignUpClick, onHomeClick, onAboutClick, onContactClick, onLoginClick, onMyAccountClick, onAddToWishlist, onWishlistClick, wishlistCount }: AppProps) {
 
   interface ProductType {
     id: number;
@@ -27,12 +37,17 @@ function App({ onSignUpClick, onHomeClick, onAboutClick, onContactClick }: AppPr
     thumbnail: string;
     discountPercentage: number;
 
+
   }
 
   const [products, setProducts] = useState<ProductType[]>([]);
   const [showAll, setShowAll] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
   const [showCategories, setShowCategories] = useState(false);
+
+  const clearSelectedProduct = () => {
+    setSelectedProductId(null);
+  };
 
   useEffect(() => {
     fetch("https://dummyjson.com/products")
@@ -44,8 +59,9 @@ function App({ onSignUpClick, onHomeClick, onAboutClick, onContactClick }: AppPr
     return (
       <>
         <Header onHomeClick={onHomeClick} onSignUpClick={onSignUpClick} onAboutClick={onAboutClick} onContactClick={onContactClick} currentScreen="app">
-          <FiHeart />
+          <FiHeart onClick={() => { onWishlistClick(), clearSelectedProduct() }} />
           <FiShoppingCart />
+          <AccountDropdown onLogout={() => onLoginClick()} onMyAccountClick={onMyAccountClick} />
         </Header>
 
         <ProductDetails
@@ -70,10 +86,17 @@ function App({ onSignUpClick, onHomeClick, onAboutClick, onContactClick }: AppPr
           onAboutClick={onAboutClick}
           onContactClick={onContactClick}
           currentScreen='app'>
-          <FiHeart className="text-xl cursor-pointer hover:text-red-500" />
+          <WishlistIcon
+            count={wishlistCount}
+            onClick={() => {
+              onWishlistClick();
+              clearSelectedProduct();
+            }}
+          />
           <FiShoppingCart className="text-xl cursor-pointer hover:text-red-500" />
-        </Header>
+          <AccountDropdown onLogout={() => onLoginClick()} onMyAccountClick={onMyAccountClick} />
 
+        </Header>
 
 
       </div>
@@ -137,6 +160,7 @@ function App({ onSignUpClick, onHomeClick, onAboutClick, onContactClick }: AppPr
               thumbnail={product.thumbnail}
               discountPercentage={product.discountPercentage}
               onClick={(id) => setSelectedProductId(id)}
+              onAddToWishlist={() => onAddToWishlist(product)}
             />
           ))}
         </div>
