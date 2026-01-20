@@ -3,7 +3,15 @@ import QrCode from "./assets/QrCode.png" ;
 import GooglePlay from "./assets/GooglePlay.png";
 import AppStore from "./assets/AppStore.png"
 
-const Footer = () => {
+interface FooterProps{
+  myaccountclick?:()=>void;
+ loginclick?:()=>void;
+  cartclick?:()=>void;
+  shopclick?:()=>void;
+ wishlistclick?:()=>void;
+}
+
+const Footer = ({myaccountclick,loginclick,cartclick,shopclick,wishlistclick}:FooterProps) => {
   return (
     <footer className="bg-black text-gray-300 mt-20">
       <div className="px-12 py-10">
@@ -54,11 +62,11 @@ const Footer = () => {
               Account
             </h3>
             <ul className="space-y-2 text-sm">
-              <li>My Account</li>
-              <li>Login / Register</li>
-              <li>Cart</li>
-              <li>Wishlist</li>
-              <li>Shop</li>
+              <li onClick={myaccountclick}>My Account</li>
+              <li onClick={loginclick}>Login / Register</li>
+              <li onClick={cartclick}>Cart</li>
+              <li onClick={wishlistclick}>Wishlist</li>
+              <li onClick={shopclick}>Shop</li>
             </ul>
           </div>
 
