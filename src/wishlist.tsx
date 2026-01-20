@@ -2,33 +2,39 @@ import { FiHeart, FiShoppingCart } from "react-icons/fi";
 import Header from "./header";
 import AccountDropdown from "./accountDropdown";
 import Footer from "./footer";
+import CartIcon from "./cartIcon";
 
 interface WishlistProps {
-    onSignUpClick: () => void;
-    onAboutClick:()=>void
-    onHomeClick:()=>void;
-    onLoginClick:()=>void;
-     onMyAccountClick:()=>void;
-       wishlist: any[];
-       wishlistCount: number;
- 
-    
+  onSignUpClick: () => void;
+  onAboutClick: () => void
+  onHomeClick: () => void;
+  onLoginClick: () => void;
+  onMyAccountClick: () => void;
+  wishlist: any[];
+  onCartClick: () => void;
+  cartCount: number;
+
+
+
 
 }
-const Wishlist=({ onSignUpClick,onAboutClick,onHomeClick,onLoginClick, onMyAccountClick,wishlist,wishlistCount }:WishlistProps)=>{
-    return(
-        <>
-        <Header onHomeClick={onHomeClick} onSignUpClick={onSignUpClick}
-            onAboutClick={onAboutClick}
-                currentScreen="wishlist"
-            >
-                <FiHeart className="text-xl cursor-pointer hover:text-red-500" />
-                <FiShoppingCart className="text-xl cursor-pointer hover:text-red-500" />
-                <AccountDropdown onLogout={() => onLoginClick()}  onMyAccountClick={onMyAccountClick} />
-                
-            </Header>
+const Wishlist = ({ onSignUpClick, onAboutClick, onHomeClick, onLoginClick, onMyAccountClick, wishlist, onCartClick, cartCount }: WishlistProps) => {
+  return (
+    <>
+      <Header onHomeClick={onHomeClick} onSignUpClick={onSignUpClick}
+        onAboutClick={onAboutClick}
+        currentScreen="wishlist"
+      >
+        <FiHeart className="text-xl cursor-pointer hover:text-red-500" />
+        <CartIcon
+          count={cartCount}
+          onClick={onCartClick}
+        />
+        <AccountDropdown onLogout={() => onLoginClick()} onMyAccountClick={onMyAccountClick} />
 
-              <div className="px-10 py-8">
+      </Header>
+
+      <div className="px-10 py-8">
         <h2 className="text-xl font-semibold mb-6">
           Wishlist ({wishlist.length})
         </h2>
@@ -50,9 +56,9 @@ const Wishlist=({ onSignUpClick,onAboutClick,onHomeClick,onLoginClick, onMyAccou
           ))}
         </div>
       </div>
-            
-             <Footer />
-        </>
-    )
+
+      <Footer />
+    </>
+  )
 }
 export default Wishlist;
