@@ -8,8 +8,10 @@ import MyAccount from "./myAccount";
 import Wishlist from "./wishlist";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Cart from "./cart";
+import Checkout from "./checkout";
 
-type Screen = "signup" | "login" | "app" | "about" | "contact"|'myAccount'|'wishlist';
+type Screen = "signup" | "login" | "app" | "about" | "contact" | 'myAccount' | 'wishlist' | 'cart'|'checkout';
 
 export interface User {
   id: number;
@@ -23,38 +25,91 @@ const AuthRoot = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [wishlist, setWishlist] = useState<any[]>([]);
+  const [cart, setCart] = useState<any[]>([]);
+
+
+
+  const increaseQuantity = (id: number) => {
+    setCart((prev) =>
+      prev.map((item) =>
+        item.id === id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      )
+    );
+  };
+
+  const decreaseQuantity = (id: number) => {
+    setCart((prev) =>
+      prev
+        .map((item) =>
+          item.id === id
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        )
+        .filter((item) => item.quantity > 0)
+    );
+  };
+
+
+
+
+
 
   const wishlistCount = wishlist.length;
+  const cartCount = cart.length;
 
 
   const goToMyAccount = () => {
-  setScreen("myAccount");
-};
+    setScreen("myAccount");
+  };
 
-const addToWishlist = (product: any) => {
-  setWishlist((prev) => {
-    const alreadyExists = prev.some(
+  const addToWishlist = (product: any) => {
+    setWishlist((prev) => {
+      const alreadyExists = prev.some(
+        (item) => item.id === product.id
+      );
+
+      if (alreadyExists) {
+        return prev;
+      }
+
+      return [...prev, product];
+    });
+
+
+    const exists = wishlist.some(
       (item) => item.id === product.id
     );
 
-    if (alreadyExists) {
-      return prev;
+    if (exists) {
+      toast.info("Already added to wishlist ");
+    } else {
+      toast.success("Added to wishlist ");
     }
+  };
 
-    return [...prev, product];
-  });
 
-  
-  const exists = wishlist.some(
-    (item) => item.id === product.id
-  );
+  const addToCart = (product: any) => {
+    setCart((prev) => {
+      const exists = prev.find((item) => item.id === product.id);
 
-  if (exists) {
-    toast.info("Already added to wishlist ");
-  } else {
-    toast.success("Added to wishlist ");
-  }
-};
+      if (exists) {
+        return prev.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+
+      return [...prev, { ...product, quantity: 1 }];
+    });
+    setScreen("cart");
+  };
+
+
+
+
 
 
   useEffect(() => {
@@ -63,96 +118,160 @@ const addToWishlist = (product: any) => {
       .then((data) => setUsers(data.users));
   }, []);
 
-  return(
+  return (
     <>
-    {screen === "app" && (
-      <App
-       onContactClick={() => setScreen("contact")}
-      onHomeClick={() => setScreen("app")}
-      onAboutClick={() => setScreen("about")}
-      onSignUpClick={() => setScreen("signup")}
-      onLoginClick={()=>setScreen("login")}
-      onMyAccountClick={goToMyAccount}
-      onAddToWishlist={addToWishlist}
-       onWishlistClick={() => setScreen("wishlist")}
-       wishlistCount={wishlistCount}
+
+
+
+      {screen === "app" && (
+        <App
+          onContactClick={() => setScreen("contact")}
+          onHomeClick={() => setScreen("app")}
+          onAboutClick={() => setScreen("about")}
+          onSignUpClick={() => setScreen("signup")}
+          onLoginClick={() => setScreen("login")}
+          onMyAccountClick={goToMyAccount}
+          onAddToWishlist={addToWishlist}
+          onWishlistClick={() => setScreen("wishlist")}
+          wishlistCount={wishlistCount}
+          onAddToCart={addToCart}
+          onCartClick={() => setScreen("cart")}
+          cartCount={cartCount}
+
+        />
+      )}
+
+      {screen === "login" && (
+        <Login
+          users={users}
+          onLogin={(user) => {
+            setCurrentUser(user);
+            setScreen("app");
+          }}
+          onSwitch={() => setScreen("signup")}
+        />
+      )}
+
+      {screen === "about" && (
+        <About
+          onContactClick={() => setScreen("contact")}
+          onSignUpClick={() => setScreen("signup")}
+          onHomeClick={() => setScreen("app")}
+          onWishlistClick={() => setScreen("wishlist")}
+          wishlistCount={wishlistCount}
+          onCartClick={() => setScreen("cart")}
+          cartCount={cartCount}
+           onNavigate={(screen) => setScreen(screen as any)}
+        />
+      )}
+
+      {screen === "contact" && (
+        <Contact
+          onAboutClick={() => setScreen("about")}
+          onSignUpClick={() => setScreen("signup")}
+          onHomeClick={() => setScreen("app")}
+          onLoginClick={() => setScreen("login")}
+          onMyAccountClick={goToMyAccount}
+          onWishlistClick={() => setScreen("wishlist")}
+          wishlistCount={wishlistCount}
+          onCartClick={() => setScreen("cart")}
+          cartCount={cartCount}
+           onNavigate={(screen) => setScreen(screen as any)}
+
+        />
+      )}
+
+      {screen === "myAccount" && (
+        <MyAccount
+          currentUser={currentUser}
+          onHomeClick={() => setScreen("app")}
+          onAboutClick={() => setScreen("about")}
+          onSignUpClick={() => setScreen("signup")}
+          onLoginClick={() => {
+            setCurrentUser(null);
+            setScreen("login");
+
+          }}
+          onMyAccountClick={goToMyAccount}
+          onWishlistClick={() => setScreen("wishlist")}
+          wishlistCount={wishlistCount}
+          onCartClick={() => setScreen("cart")}
+          cartCount={cartCount}
+           onNavigate={(screen) => setScreen(screen as any)}
+        />
+      )}
+
+      {screen === "wishlist" && (
+        <Wishlist
+          wishlist={wishlist}
+          onHomeClick={() => setScreen("app")}
+          onSignUpClick={() => setScreen("signup")}
+          onAboutClick={() => setScreen("about")}
+          onLoginClick={() => setScreen("login")}
+          onMyAccountClick={goToMyAccount}
+          onCartClick={() => setScreen("cart")}
+          cartCount={cartCount}
+
+
+        />
+      )}
+
+      {screen === "cart" && (
+        <Cart
+          cart={cart}
+          onHomeClick={() => setScreen("app")}
+          onContactClick={() => setScreen("contact")}
+
+          onAboutClick={() => setScreen("about")}
+          onSignUpClick={() => setScreen("signup")}
+          onLoginClick={() => setScreen("login")}
+          onMyAccountClick={goToMyAccount}
+          onAddToWishlist={addToWishlist}
+          onWishlistClick={() => setScreen("wishlist")}
+          wishlistCount={wishlistCount}
+          onIncrease={increaseQuantity}
+          onDecrease={decreaseQuantity}
+          onCheckout={() => setScreen("checkout")}
+           onNavigate={(screen) => setScreen(screen as any)}
+        />
+      )}
+
+      {screen === "checkout" && (
+  <Checkout
+    cart={cart}
+    onHomeClick={() => setScreen("app")}
+     onNavigate={(screen) => setScreen(screen as any)}
+     onAboutClick={() => setScreen("about")}
+          onSignUpClick={() => setScreen("signup")}
+          onLoginClick={() => setScreen("login")}
+          onMyAccountClick={goToMyAccount}
+          onWishlistClick={() => setScreen("wishlist")}
+          wishlistCount={wishlistCount}
+          onCartClick={() => setScreen("cart")}
+          cartCount={cartCount}
+          onContactClick={() => setScreen("contact")}
+          
+
     
-      />
-    )}
+  />
+)}
 
-    {screen === "login" && (
-      <Login
-       users={users}
-        onLogin={(user) => {
-  setCurrentUser(user);
-  setScreen("app");
-}}
-        onSwitch={() => setScreen("signup")}
-      />
-    )}
+      {screen === "signup" && (
+        <SignUp
 
-    {screen === "about" && (
-      <About
-       onContactClick={() => setScreen("contact")}
-        onSignUpClick={() => setScreen("signup")}
-        onHomeClick={() => setScreen("app")}
-        onWishlistClick={() => setScreen("wishlist")}
-        wishlistCount={wishlistCount}
-      />
-    )}
+          onSignup={() => setScreen("app")}
+          onSwitch={() => setScreen("login")}
+        />
+      )}
 
-    {screen === "contact" && (
-      <Contact
-         onAboutClick={() => setScreen("about")}
-        onSignUpClick={() => setScreen("signup")}
-        onHomeClick={() => setScreen("app")}
-       onLoginClick={()=>setScreen("login")}
-       onMyAccountClick={goToMyAccount}
-       onWishlistClick={() => setScreen("wishlist")}
-       wishlistCount={wishlistCount}
-       
-      />
-    )}
 
-    {screen === "myAccount" && (
-      <MyAccount
-       currentUser={currentUser}
-      onHomeClick={() => setScreen("app")}
-      onAboutClick={() => setScreen("about")}
-      onSignUpClick={() => setScreen("signup")}
-      onLoginClick={() => {
-        setCurrentUser(null);
-        setScreen("login");
-        
-      }}
-      onMyAccountClick={goToMyAccount}
-      />
-    )}
-
-    {screen === "wishlist" && (
-      <Wishlist
-        wishlist={wishlist}
-      onHomeClick={() => setScreen("app")}
-      onSignUpClick={() => setScreen("signup")}
-      onAboutClick={() => setScreen("about")}
-      onLoginClick={()=>setScreen("login")}
-      onMyAccountClick={goToMyAccount}
-      wishlistCount={wishlistCount}
-      />
-    )}
-
-    {screen === "signup" && (
-     <SignUp
-
-      onSignup={() => setScreen("app")}
-      onSwitch={() => setScreen("login")}
-    />
-    )}
-
-   
-    <ToastContainer position="top-right" autoClose={2000} />
+      <ToastContainer position="top-right" autoClose={2000} />
 
     </>
   )
 }
+
+
 export default AuthRoot;
+
+
