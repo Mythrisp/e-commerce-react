@@ -8,9 +8,9 @@ interface HeaderProps {
   onAboutClick?: () => void;
   onHomeClick?: () => void;
   onContactClick?: () => void;
-   onWishlistClick?: () => void;
+  onWishlistClick?: () => void;
 
-  currentScreen?: "signup" | "login" | "app" | "about" | "contact"|"wishlist";
+  currentScreen?: "signup" | "login" | "app" | "about" | "contact" | "wishlist" | 'cart'|'checkout';
 }
 
 
@@ -22,24 +22,24 @@ const Header = ({ children, onSignUpClick, onHomeClick, onContactClick, onAboutC
         <nav className="flex justify-center md:justify-start gap-6 text-sm font-medium *:hover:text-red-800">
           <a
             onClick={onHomeClick} className={`cursor-pointer ${currentScreen === "app"
-                ? "underline underline-offset-4 font-semibold"
-                : ""
+              ? "underline underline-offset-4 font-semibold"
+              : ""
               }`}>Home</a>
           <a onClick={onContactClick}
             className={`cursor-pointer ${currentScreen === "contact"
-                ? "underline underline-offset-4 font-semibold"
-                : ""
+              ? "underline underline-offset-4 font-semibold"
+              : ""
               }`}>Contact</a>
           <a
             onClick={onAboutClick}
             className={`cursor-pointer ${currentScreen === "about"
-                ? "underline underline-offset-4 font-semibold"
-                : ""
+              ? "underline underline-offset-4 font-semibold"
+              : ""
               }`}>About</a>
           <a onClick={onSignUpClick}
             className={`cursor-pointer ${currentScreen === "signup"
-                ? "underline underline-offset-4 font-semibold"
-                : ""
+              ? "underline underline-offset-4 font-semibold"
+              : ""
               }`}>Sign Up</a>
         </nav>
 
@@ -57,9 +57,11 @@ const Header = ({ children, onSignUpClick, onHomeClick, onContactClick, onAboutC
         </div>
 
       </div>
+      
     </header>
+
 
 
   )
 }
-export default Header;
+export default Header
