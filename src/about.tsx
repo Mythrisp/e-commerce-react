@@ -1,5 +1,5 @@
 import Header from "./header";
-import {  FiShoppingCart, FiUser, FiDollarSign, FiUsers, FiShoppingBag } from "react-icons/fi";
+import { FiShoppingCart, FiUser, FiDollarSign, FiUsers, FiShoppingBag } from "react-icons/fi";
 import AboutSideImage from './assets/AboutSideImage.png'
 import Footer from "./footer";
 import Breadcrumb from "./breadcrumb";
@@ -16,15 +16,16 @@ interface AboutProps {
   wishlistCount: number;
   onCartClick: () => void;
   cartCount: number;
-   onNavigate: (screen: string) => void;
-
+  onNavigate: (screen: string) => void;
+  onLoginClick: () => void;
+  onMyAccountClick: () => void;
 
 
 
 }
 
 
-const About = ({ onSignUpClick, onContactClick, onHomeClick, onWishlistClick, wishlistCount, onCartClick, cartCount ,onNavigate}: AboutProps) => {
+const About = ({ onSignUpClick, onContactClick, onHomeClick, onWishlistClick, wishlistCount, onCartClick, cartCount, onNavigate, onLoginClick, onMyAccountClick }: AboutProps) => {
   return (
     <>
       <Header onHomeClick={onHomeClick} onSignUpClick={onSignUpClick} onContactClick={onContactClick}
@@ -42,13 +43,13 @@ const About = ({ onSignUpClick, onContactClick, onHomeClick, onWishlistClick, wi
         <FiUser className="text-xl cursor-pointer hover:text-red-500" />
       </Header>
 
-        <Breadcrumb
-  onHomeClick={onHomeClick}
-  onNavigate={onNavigate}
-  paths={[
-    { label: "About", screen: "cart" }
-  ]}
-/>
+      <Breadcrumb
+        onHomeClick={onHomeClick}
+        onNavigate={onNavigate}
+        paths={[
+          { label: "About", screen: "cart" }
+        ]}
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-2 mt-15 justify-content pl-20 pr-20 md:items-center md:justify-center gap-10">
         <div >
@@ -101,7 +102,7 @@ const About = ({ onSignUpClick, onContactClick, onHomeClick, onWishlistClick, wi
 
       </div>
 
-      <Footer />
+      <Footer myaccountclick={onMyAccountClick} loginclick={onLoginClick} cartclick={onCartClick} wishlistclick={onWishlistClick} shopclick={onHomeClick} />
     </>
   )
 }
