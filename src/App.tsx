@@ -200,4 +200,4 @@ function App({ onSignUpClick, onHomeClick, onAboutClick, onContactClick, onLogin
   )
 }
 
-export default App
+export default App;
