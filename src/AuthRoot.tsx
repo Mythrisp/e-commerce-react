@@ -118,6 +118,11 @@ const exists = cart.some(
 
   };
 
+
+
+
+
+
   useEffect(() => {
     fetch("https://dummyjson.com/users")
       .then((res) => res.json())
@@ -169,6 +174,8 @@ const exists = cart.some(
           onCartClick={() => setScreen("cart")}
           cartCount={cartCount}
           onNavigate={(screen) => setScreen(screen as any)}
+           onLoginClick={() => setScreen("login")}
+          onMyAccountClick={goToMyAccount}
         />
       )}
 
@@ -279,7 +286,10 @@ const exists = cart.some(
 }
 
 
-export default AuthRoot;
 
+
+
+
+export default AuthRoot;
 
 
