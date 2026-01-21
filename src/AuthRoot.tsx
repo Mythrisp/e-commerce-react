@@ -11,7 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Cart from "./cart";
 import Checkout from "./checkout";
 
-type Screen = "signup" | "login" | "app" | "about" | "contact" | 'myAccount' | 'wishlist' | 'cart'|'checkout';
+type Screen = "signup" | "login" | "app" | "about" | "contact" | 'myAccount' | 'wishlist' | 'cart' | 'checkout';
 
 export interface User {
   id: number;
@@ -28,7 +28,7 @@ const AuthRoot = () => {
   const [cart, setCart] = useState<any[]>([]);
 
 
-const wishlistIds = wishlist.map(item => item.id);
+  const wishlistIds = wishlist.map(item => item.id);
 
   const increaseQuantity = (id: number) => {
     setCart((prev) =>
@@ -66,14 +66,14 @@ const wishlistIds = wishlist.map(item => item.id);
   };
 
   const addToWishlist = (product: any) => {
-     setWishlist((prev) => {
-    const exists = prev.some(item => item.id === product.id);
-    if (exists) {
-      return prev.filter(item => item.id !== product.id);
-    } else {
-      return [...prev, product];
-    }
-  });
+    setWishlist((prev) => {
+      const exists = prev.some(item => item.id === product.id);
+      if (exists) {
+        return prev.filter(item => item.id !== product.id);
+      } else {
+        return [...prev, product];
+      }
+    });
 
 
     const exists = wishlist.some(
@@ -81,15 +81,15 @@ const wishlistIds = wishlist.map(item => item.id);
     );
 
     if (exists) {
-       toast.info("Removed from wishlist");
+      toast.info("Removed from wishlist");
     } else {
       toast.success("Added to wishlist ");
     }
   };
 
-  
-  
-const addToCart = (product: any) => {
+
+
+  const addToCart = (product: any) => {
     setCart((prev) => {
       const exists = prev.find((item) => item.id === product.id);
 
@@ -104,8 +104,8 @@ const addToCart = (product: any) => {
       return [...prev, { ...product, quantity: 1 }];
     });
 
-    
-   
+
+
   };
 
 
@@ -163,7 +163,7 @@ const addToCart = (product: any) => {
           wishlistCount={wishlistCount}
           onCartClick={() => setScreen("cart")}
           cartCount={cartCount}
-           onNavigate={(screen) => setScreen(screen as any)}
+          onNavigate={(screen) => setScreen(screen as any)}
         />
       )}
 
@@ -178,7 +178,7 @@ const addToCart = (product: any) => {
           wishlistCount={wishlistCount}
           onCartClick={() => setScreen("cart")}
           cartCount={cartCount}
-           onNavigate={(screen) => setScreen(screen as any)}
+          onNavigate={(screen) => setScreen(screen as any)}
 
         />
       )}
@@ -199,7 +199,7 @@ const addToCart = (product: any) => {
           wishlistCount={wishlistCount}
           onCartClick={() => setScreen("cart")}
           cartCount={cartCount}
-           onNavigate={(screen) => setScreen(screen as any)}
+          onNavigate={(screen) => setScreen(screen as any)}
         />
       )}
 
@@ -213,7 +213,7 @@ const addToCart = (product: any) => {
           onMyAccountClick={goToMyAccount}
           onCartClick={() => setScreen("cart")}
           cartCount={cartCount}
-
+          onAddToCart={addToCart}
 
         />
       )}
@@ -234,16 +234,16 @@ const addToCart = (product: any) => {
           onIncrease={increaseQuantity}
           onDecrease={decreaseQuantity}
           onCheckout={() => setScreen("checkout")}
-           onNavigate={(screen) => setScreen(screen as any)}
+          onNavigate={(screen) => setScreen(screen as any)}
         />
       )}
 
       {screen === "checkout" && (
-  <Checkout
-    cart={cart}
-    onHomeClick={() => setScreen("app")}
-     onNavigate={(screen) => setScreen(screen as any)}
-     onAboutClick={() => setScreen("about")}
+        <Checkout
+          cart={cart}
+          onHomeClick={() => setScreen("app")}
+          onNavigate={(screen) => setScreen(screen as any)}
+          onAboutClick={() => setScreen("about")}
           onSignUpClick={() => setScreen("signup")}
           onLoginClick={() => setScreen("login")}
           onMyAccountClick={goToMyAccount}
@@ -252,11 +252,11 @@ const addToCart = (product: any) => {
           onCartClick={() => setScreen("cart")}
           cartCount={cartCount}
           onContactClick={() => setScreen("contact")}
-          
 
-    
-  />
-)}
+
+
+        />
+      )}
 
       {screen === "signup" && (
         <SignUp
