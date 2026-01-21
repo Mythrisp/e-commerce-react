@@ -107,7 +107,7 @@ const Contact = ({ onSignUpClick, onAboutClick, onHomeClick, onLoginClick, onMyA
 
 
             </div>
-            <Footer myaccountclick={onMyAccountClick} loginclick={onLoginClick} cartclick={onCartClick} wishlistclick={onWishlistClick}  />
+            <Footer myaccountclick={onMyAccountClick} loginclick={onLoginClick} cartclick={onCartClick} wishlistclick={onWishlistClick} shopclick={onHomeClick} />
 
         </>
 
