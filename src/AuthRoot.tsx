@@ -28,6 +28,7 @@ const AuthRoot = () => {
   const [cart, setCart] = useState<any[]>([]);
 
 
+const wishlistIds = wishlist.map(item => item.id);
 
   const increaseQuantity = (id: number) => {
     setCart((prev) =>
@@ -65,17 +66,14 @@ const AuthRoot = () => {
   };
 
   const addToWishlist = (product: any) => {
-    setWishlist((prev) => {
-      const alreadyExists = prev.some(
-        (item) => item.id === product.id
-      );
-
-      if (alreadyExists) {
-        return prev;
-      }
-
+     setWishlist((prev) => {
+    const exists = prev.some(item => item.id === product.id);
+    if (exists) {
+      return prev.filter(item => item.id !== product.id);
+    } else {
       return [...prev, product];
-    });
+    }
+  });
 
 
     const exists = wishlist.some(
@@ -83,14 +81,15 @@ const AuthRoot = () => {
     );
 
     if (exists) {
-      toast.info("Already added to wishlist ");
+       toast.info("Removed from wishlist");
     } else {
       toast.success("Added to wishlist ");
     }
   };
 
-
-  const addToCart = (product: any) => {
+  
+  
+const addToCart = (product: any) => {
     setCart((prev) => {
       const exists = prev.find((item) => item.id === product.id);
 
@@ -104,7 +103,9 @@ const AuthRoot = () => {
 
       return [...prev, { ...product, quantity: 1 }];
     });
-    setScreen("cart");
+
+    
+   
   };
 
 
@@ -137,6 +138,7 @@ const AuthRoot = () => {
           onAddToCart={addToCart}
           onCartClick={() => setScreen("cart")}
           cartCount={cartCount}
+          wishlistIds={wishlistIds}
 
         />
       )}
