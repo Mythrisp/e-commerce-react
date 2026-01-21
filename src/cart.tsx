@@ -168,7 +168,7 @@ const Cart = ({ cart, onHomeClick, onSignUpClick, onAboutClick, onContactClick, 
                 </div>
             </div>
 
-            <Footer />
+            <Footer myaccountclick={onMyAccountClick} loginclick={onLoginClick}  wishlistclick={onWishlistClick} shopclick={onHomeClick} />
         </>
     );
 };
