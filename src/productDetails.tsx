@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 
 interface ProductDetailsProps {
   productId: number;
- 
+
   onBack: () => void;
+  onAddToCart: (product: any) => void;
 }
 
 interface Product {
@@ -15,7 +16,7 @@ interface Product {
   images: string[];
 }
 
-const ProductDetails = ({ productId, onBack }: ProductDetailsProps) => {
+const ProductDetails = ({ productId, onBack, onAddToCart }: ProductDetailsProps) => {
   const [product, setProduct] = useState<Product | null>(null);
   const [activeImage, setActiveImage] = useState("");
 
@@ -38,7 +39,7 @@ const ProductDetails = ({ productId, onBack }: ProductDetailsProps) => {
       </button>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        
+
         <div>
           <img
             src={activeImage}
@@ -51,23 +52,33 @@ const ProductDetails = ({ productId, onBack }: ProductDetailsProps) => {
                 key={img}
                 src={img}
                 onClick={() => setActiveImage(img)}
-                className={`w-20 h-20 object-contain bg-gray-100 rounded cursor-pointer border ${
-                  activeImage === img ? "border-red-500" : ""
-                }`}
+                className={`w-20 h-20 object-contain bg-gray-100 rounded cursor-pointer border ${activeImage === img ? "border-red-500" : ""
+                  }`}
               />
             ))}
           </div>
         </div>
 
-      
+
         <div>
           <h2 className="text-3xl font-semibold">{product.title}</h2>
           <p className="text-red-500 text-2xl mt-2">${product.price}</p>
           <p className="mt-4 text-gray-600">{product.description}</p>
 
-          <button className="mt-6 bg-red-500 text-white px-8 py-3 rounded">
-            Buy Now
-          </button>
+          <div className="flex gap-3">
+            <button className="mt-6 bg-red-500 text-white px-8 py-3 rounded">
+              Buy Now
+            </button>
+
+            <button
+              onClick={() => onAddToCart(product)}
+              className="mt-6 bg-red-500 text-white px-8 py-3 rounded"
+            >
+              Add To Cart
+            </button>
+
+          </div>
+
         </div>
       </div>
     </div>
