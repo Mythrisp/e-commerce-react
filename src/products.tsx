@@ -10,10 +10,11 @@ interface ProductProps {
   onClick: (id: number) => void;
   onAddToWishlist: () => void;
   onAddToCart: () => void;
+  isWishlisted: boolean;
 
 }
 
-const Product = ({id,title, price,rating,thumbnail,discountPercentage,onClick, onAddToWishlist, onAddToCart}: ProductProps) => {
+const Product = ({id,title, price,rating,thumbnail,discountPercentage,onClick, onAddToWishlist, onAddToCart,isWishlisted}: ProductProps) => {
 
   const roundedRating = Math.round(rating);
   const reviewCount = Math.floor(rating * 20);
@@ -28,12 +29,14 @@ const Product = ({id,title, price,rating,thumbnail,discountPercentage,onClick, o
         className="bg-white p-4 rounded relative group cursor-pointer"
       >
 
-
-
         <FiHeart onClick={(e) => {
           e.stopPropagation();
           onAddToWishlist()
-        }} className="absolute top-6 right-6 cursor-pointer text-gray-500 hover:text-red-500" />
+        }} className={`absolute top-6 right-6 cursor-pointer transition
+    ${isWishlisted
+      ? "text-red-500 fill-red-500"
+      : "text-gray-400 hover:text-red-500"}
+  `} />
 
         <div className="bg-gray-100 h-50 flex items-center justify-center rounded">
           <img
