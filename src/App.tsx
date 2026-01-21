@@ -25,12 +25,13 @@ interface AppProps {
   onAddToCart: (product: any) => void;
   onCartClick: () => void;
   cartCount: number;
+  wishlistIds: number[];
 
 
 
 }
 
-function App({ onSignUpClick, onHomeClick, onAboutClick, onContactClick, onLoginClick, onMyAccountClick, onAddToWishlist, onWishlistClick, wishlistCount, onAddToCart, onCartClick, cartCount }: AppProps) {
+function App({ onSignUpClick, onHomeClick, onAboutClick, onContactClick, onLoginClick, onMyAccountClick, onAddToWishlist, onWishlistClick, wishlistCount, onAddToCart, onCartClick, cartCount, wishlistIds }: AppProps) {
 
   interface ProductType {
     id: number;
@@ -39,6 +40,7 @@ function App({ onSignUpClick, onHomeClick, onAboutClick, onContactClick, onLogin
     rating: number;
     thumbnail: string;
     discountPercentage: number;
+
 
 
   }
@@ -60,10 +62,10 @@ function App({ onSignUpClick, onHomeClick, onAboutClick, onContactClick, onLogin
     return (
       <>
         <Header onHomeClick={onHomeClick} onSignUpClick={onSignUpClick} onAboutClick={onAboutClick} onContactClick={onContactClick} currentScreen="app">
-           <WishlistIcon
-          count={wishlistCount}
-          onClick={onWishlistClick}
-        />
+          <WishlistIcon
+            count={wishlistCount}
+            onClick={onWishlistClick}
+          />
 
           <CartIcon
             count={cartCount}
@@ -75,6 +77,7 @@ function App({ onSignUpClick, onHomeClick, onAboutClick, onContactClick, onLogin
         <ProductDetails
           productId={selectedProductId}
           onBack={() => setSelectedProductId(null)}
+          onAddToCart={onAddToCart}
         />
 
         <Footer />
@@ -94,10 +97,10 @@ function App({ onSignUpClick, onHomeClick, onAboutClick, onContactClick, onLogin
           onAboutClick={onAboutClick}
           onContactClick={onContactClick}
           currentScreen='app'>
-           <WishlistIcon
-          count={wishlistCount}
-          onClick={onWishlistClick}
-        />
+          <WishlistIcon
+            count={wishlistCount}
+            onClick={onWishlistClick}
+          />
 
           <CartIcon
             count={cartCount}
@@ -174,6 +177,7 @@ function App({ onSignUpClick, onHomeClick, onAboutClick, onContactClick, onLogin
               onClick={(id) => setSelectedProductId(id)}
               onAddToWishlist={() => onAddToWishlist(product)}
               onAddToCart={() => onAddToCart(product)}
+              isWishlisted={wishlistIds.includes(product.id)}
             />
           ))}
         </div>
@@ -190,14 +194,10 @@ function App({ onSignUpClick, onHomeClick, onAboutClick, onContactClick, onLogin
 
 
       <NewArrival />
-      <Footer myaccountclick={onMyAccountClick} loginclick={onLoginClick} cartclick={onCartClick} wishlistclick={onWishlistClick}  />
+      <Footer myaccountclick={onMyAccountClick} loginclick={onLoginClick} cartclick={onCartClick} wishlistclick={onWishlistClick} />
 
     </>
   )
 }
 
 export default App
-
-
-
-
