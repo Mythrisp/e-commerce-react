@@ -13,12 +13,13 @@ interface WishlistProps {
   wishlist: any[];
   onCartClick: () => void;
   cartCount: number;
+   onAddToCart: (product: any) => void;
 
 
 
 
 }
-const Wishlist = ({ onSignUpClick, onAboutClick, onHomeClick, onLoginClick, onMyAccountClick, wishlist, onCartClick, cartCount }: WishlistProps) => {
+const Wishlist = ({ onSignUpClick, onAboutClick, onHomeClick, onLoginClick, onMyAccountClick, wishlist, onCartClick, cartCount,onAddToCart }: WishlistProps) => {
   return (
     <>
       <Header onHomeClick={onHomeClick} onSignUpClick={onSignUpClick}
@@ -50,10 +51,18 @@ const Wishlist = ({ onSignUpClick, onAboutClick, onHomeClick, onLoginClick, onMy
                 src={item.thumbnail}
                 className="w-full h-40 object-contain"
               />
+              
               <h3 className="mt-3 text-sm">{item.title}</h3>
               <p className="text-red-500 font-semibold">${item.price}</p>
+              <button
+    onClick={() => onAddToCart(item)}
+    className="mt-3 w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition"
+  >
+    Add To Cart
+  </button>
             </div>
           ))}
+          
         </div>
       </div>
 
