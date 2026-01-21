@@ -66,7 +66,7 @@ const Wishlist = ({ onSignUpClick, onAboutClick, onHomeClick, onLoginClick, onMy
         </div>
       </div>
 
-      <Footer />
+      <Footer myaccountclick={onMyAccountClick} loginclick={onLoginClick} cartclick={onCartClick} shopclick={onHomeClick} />
     </>
   )
 }
